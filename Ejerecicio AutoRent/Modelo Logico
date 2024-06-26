@@ -1,0 +1,33 @@
+Sucursal:
+
+Tabla para almacenar la información de las sucursales.
+Campos obligatorios (NOT NULL) para asegurar la integridad de los datos.
+idSucursal es la clave primaria y se auto incrementa.
+Empleado:
+
+Tabla para almacenar la información de los empleados.
+idSucursal es una clave foránea que referencia a la tabla Sucursal.
+cedula es única para evitar duplicados.
+Clave primaria idEmpleado auto incrementada.
+Cliente:
+
+Tabla para almacenar la información de los clientes.
+cedula es única para evitar duplicados.
+Clave primaria idCliente auto incrementada.
+Vehiculo:
+
+Tabla para almacenar la información de los vehículos.
+placa es única para evitar duplicados.
+Clave primaria idVehiculo auto incrementada.
+Alquiler:
+
+Tabla para almacenar la información de los alquileres.
+idVehiculo, idCliente, idEmpleado, idSucursalSalida y idSucursalLlegada son claves foráneas que aseguran la referencialidad con las tablas correspondientes.
+idAlquiler es la clave primaria y se auto incrementa.
+Usuario:
+
+Tabla para almacenar la información de los usuarios del sistema.
+username es único para evitar duplicados.
+tipoUsuario distingue entre clientes y empleados.
+Clave primaria idUsuario auto incrementada.
+Claves foráneas idCliente y idEmpleado para referenciar las tablas correspondientes, según el tipo de usuario.
