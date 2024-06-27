@@ -1,0 +1,90 @@
+show databases;
+create database AUTO_RENT;
+use AUTO_RENT;
+
+CREATE TABLE Sucursal (
+    id_sucursal INT PRIMARY KEY AUTO_INCREMENT,
+    ciudad VARCHAR(100) NOT NULL,
+    direccion VARCHAR(255) NOT NULL,
+    telefono_fijo VARCHAR(15),
+    celular VARCHAR(15),
+    correo_electronico VARCHAR(100)
+);
+
+CREATE TABLE Empleado (
+    id_empleado INT PRIMARY KEY AUTO_INCREMENT,
+    id_sucursal INT,
+    cedula VARCHAR(20) NOT NULL UNIQUE,
+    nombres VARCHAR(100) NOT NULL,
+    apellidos VARCHAR(100) NOT NULL,
+    direccion VARCHAR(255) NOT NULL,
+    ciudad_residencia VARCHAR(100),
+    celular VARCHAR(15),
+    correo_electronico VARCHAR(100),
+    FOREIGN KEY (id_sucursal) REFERENCES Sucursal(id_sucursal)
+);
+
+CREATE TABLE Cliente (
+    id_cliente INT PRIMARY KEY AUTO_INCREMENT,
+    cedula VARCHAR(20) NOT NULL UNIQUE,
+    nombres VARCHAR(100) NOT NULL,
+    apellidos VARCHAR(100) NOT NULL,
+    direccion VARCHAR(255) NOT NULL,
+    ciudad_residencia VARCHAR(100),
+    celular VARCHAR(15),
+    correo_electronico VARCHAR(100)
+);
+
+CREATE TABLE Vehiculo (
+    id_vehiculo INT PRIMARY KEY AUTO_INCREMENT,
+    tipo_vehiculo VARCHAR(50) NOT NULL,
+    placa VARCHAR(10) NOT NULL UNIQUE,
+    referencia VARCHAR(50),
+    modelo YEAR,
+    puertas INT,
+    capacidad INT,
+    sunroof BOOLEAN,
+    motor VARCHAR(50),
+    color VARCHAR(50)
+);
+
+CREATE TABLE Alquiler (
+    id_alquiler INT PRIMARY KEY AUTO_INCREMENT,
+    id_vehiculo INT,
+    id_cliente INT,
+    id_empleado INT,
+    id_sucursal_salida INT,
+    id_sucursal_llegada INT,
+    fecha_salida DATE NOT NULL,
+    fecha_llegada DATE,
+    fecha_esperada_llegada DATE NOT NULL,
+    valor_alquiler_semana DECIMAL(10, 2),
+    valor_alquiler_dia DECIMAL(10, 2),
+    porcentaje_descuento DECIMAL(5, 2),
+    valor_cotizado DECIMAL(10, 2),
+    valor_pagado DECIMAL(10, 2),
+    FOREIGN KEY (id_vehiculo) REFERENCES Vehiculo(id_vehiculo),
+    FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente),
+    FOREIGN KEY (id_empleado) REFERENCES Empleado(id_empleado),
+    FOREIGN KEY (id_sucursal_salida) REFERENCES Sucursal(id_sucursal),
+    FOREIGN KEY (id_sucursal_llegada) REFERENCES Sucursal(id_sucursal)
+);
+
+CREATE TABLE Usuario (
+    id_usuario INT PRIMARY KEY AUTO_INCREMENT,
+    id_cliente INT,
+    id_empleado INT,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    tipo_usuario ENUM('empleado', 'cliente') NOT NULL,
+    FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente),
+    FOREIGN KEY (id_empleado) REFERENCES Empleado(id_empleado)
+);
+ 
+CREATE INDEX idx_empleado_sucursal ON Empleado(id_sucursal);
+CREATE INDEX idx_alquiler_vehiculo ON Alquiler(id_vehiculo);
+CREATE INDEX idx_alquiler_cliente ON Alquiler(id_cliente);
+CREATE INDEX idx_alquiler_empleado ON Alquiler(id_empleado);
+CREATE INDEX idx_alquiler_sucursal_salida ON Alquiler(id_sucursal_salida);
+CREATE INDEX idx_alquiler_sucursal_llegada ON Alquiler(id_sucursal_llegada);
+
